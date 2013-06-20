@@ -1,7 +1,10 @@
 package connector;
 
+import java.io.IOException;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -21,31 +24,31 @@ public class Connector {
 		// http://noppa-api-dev.aalto.fi/api/v1/organizations?key=cdda4ae4833c0114005de5b5c4371bb8
 	}
 
-	public String getResults(String parameter, final DisplaySearchResultsActivity d) {
+	public String getResults(String parameter) {
 		final String url = host + "courses?" + key + "&search=" +parameter;
-		final String r = "";
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-
-					HttpClient client = new DefaultHttpClient();
-					String getURL = url;
-					HttpGet get = new HttpGet(getURL);
-					HttpResponse responseGet = client.execute(get);
-					HttpEntity resEntityGet = responseGet.getEntity();
-					if (resEntityGet != null) {
-						// do something with the response
-						String r = EntityUtils.toString(resEntityGet);
-						
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-
-				}
+		String r = "";
+		try {
+			HttpClient client = new DefaultHttpClient();
+			String getURL = url;
+			HttpGet get = new HttpGet(getURL);
+			HttpResponse responseGet;
+			responseGet = client.execute(get);
+			HttpEntity resEntityGet = responseGet.getEntity();
+			if (resEntityGet != null) {
+				// do something with the response
+				r = EntityUtils.toString(resEntityGet);
 			}
-		}).start();
-
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		return r;
+		
 	}
 
 	
