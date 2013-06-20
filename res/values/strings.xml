@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MyNoppaApp</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="button_send">Send</string>
+    <string name="title_activity_display_search_results">DisplaySearchResultsActivity</string>
+
+</resources>
