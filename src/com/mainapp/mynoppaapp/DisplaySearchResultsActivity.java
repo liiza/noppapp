@@ -27,7 +27,8 @@ public class DisplaySearchResultsActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_display_search_results);
 		Intent intent = getIntent();
-		//message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+		message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+		list.add("Results");
 		mAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
 		final ListView listview = (ListView) findViewById(R.id.listview);
 		listview.setAdapter(mAdapter);
@@ -49,7 +50,7 @@ public class DisplaySearchResultsActivity extends Activity{
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-					final String r = MainActivity.CONNECTOR.getResults("computer");
+					final String r = MainActivity.CONNECTOR.getResults(message);
 					//final TextView resultlist = (TextView) findViewById(R.id.search_results);
 					final ListView listview = (ListView) findViewById(R.id.listview);
 					listview.post(new Runnable() {
