@@ -12,46 +12,64 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class DisplaySearchResultsActivity extends Activity{
+public class DisplaySearchResultsActivity extends Activity {
 	private ArrayAdapter mAdapter;
-    final ArrayList<String> list = new ArrayList<String>();
-    private String message;
-    @Override
+	final ArrayList<String> list = new ArrayList<String>();
+	final ArrayList<Course> courselist = new ArrayList<Course>();
+	public final static String EXTRA_MESSAGE = "com.mainapp.mynoppaapp.MESSAGE";
+
+	private String message;
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_display_search_results);
 		Intent intent = getIntent();
 		message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-		list.add("Results");
+		//list.add("Results");
 		mAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
 		final ListView listview = (ListView) findViewById(R.id.listview);
+		listview.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+
+				openCourseDetails(position);
+			}
+		});
 		listview.setAdapter(mAdapter);
 		getSearchResults();
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_display_search_results, menu);
-		
-	
-
 		return true;
 	}
 
-	public void getSearchResults() {
+	private void openCourseDetails(int position) {
+		Intent intent = new Intent(this, DisplayCourseDetails.class);
+		Course course = courselist.get(position);
+		intent.putExtra(EXTRA_MESSAGE, course);
+		startActivity(intent);
+	}
+
+	private void getSearchResults() {
 
 		new Thread(new Runnable() {
 			public void run() {
 				try {
 					final String r = MainActivity.CONNECTOR.getResults(message);
-					//final TextView resultlist = (TextView) findViewById(R.id.search_results);
 					final ListView listview = (ListView) findViewById(R.id.listview);
 					listview.post(new Runnable() {
 						public void run() {
@@ -62,9 +80,31 @@ public class DisplaySearchResultsActivity extends Activity{
 								JSONArray jsonarray = new JSONArray(jsontokener);
 								for (int i = 0; i < jsonarray.length(); i++) {
 									JSONObject obj = (JSONObject) jsonarray.get(i);
+									JSONArray jsonArray = (JSONArray) obj.get("links");
+									ArrayList<String> links = new ArrayList<String>();
+									if (jsonArray != null) {
+										int len = jsonArray.length();
+										for (int j = 0; j < len; j++) {
+											links.add(jsonArray.get(j)
+													.toString());
+										}
+									}
+									String dept_id = (String) obj
+											.get("dept_id");
+									String course_id = (String) obj
+											.get("course_id");
+									String course_url_oodi = (String) obj
+											.get("course_url_oodi");
+									String noppa_language = (String) obj
+											.get("noppa_language");
+									String course_url = (String) obj
+											.get("course_url");
 									String name = (String) obj.get("name");
-									//resultlist.setText(name);
-									list.add(name);
+									Course c = new Course(links, dept_id,
+											course_id, course_url_oodi,
+											noppa_language, course_url, name);
+									courselist.add(c);
+									mAdapter.add(name);
 								}
 
 							} catch (JSONException e) {
@@ -81,8 +121,6 @@ public class DisplaySearchResultsActivity extends Activity{
 				}
 			}
 		}).start();
-
-	
 
 	}
 
