@@ -14,18 +14,19 @@ import com.mainapp.mynoppaapp.DisplaySearchResultsActivity;
 import com.mainapp.mynoppaapp.MainActivity;
 
 public class Connector {
-	private final String key = "key=cdda4ae4833c0114005de5b5c4371bb8";
-	private final String host = "http://noppa-api-dev.aalto.fi/api/v1/";
+
 	
 	
 
 	public Connector() {
 		// examble url
 		// http://noppa-api-dev.aalto.fi/api/v1/organizations?key=cdda4ae4833c0114005de5b5c4371bb8
+		// http://noppa-api-dev.aalto.fi/api/v1/courses?key=cdda4ae4833c0114005de5b5c4371bb8&org_id=eng
+		// http://noppa-api-dev.aalto.fi/api/v1/courses/s-118.3216/overview?key=cdda4ae4833c0114005de5b5c4371bb8
 	}
 
-	public String getResults(String parameter) {
-		final String url = host + "courses?" + key + "&search=" +parameter;
+	public String getResults(String u) {
+		final String url = u;
 		String r = "";
 		try {
 			HttpClient client = new DefaultHttpClient();

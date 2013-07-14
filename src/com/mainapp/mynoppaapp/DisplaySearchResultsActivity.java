@@ -1,6 +1,7 @@
 package com.mainapp.mynoppaapp;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +29,9 @@ public class DisplaySearchResultsActivity extends Activity {
 	final ArrayList<Course> courselist = new ArrayList<Course>();
 	public final static String EXTRA_MESSAGE = "com.mainapp.mynoppaapp.MESSAGE";
 
+	private final String key = "key=cdda4ae4833c0114005de5b5c4371bb8";
+	private final String host = "http://noppa-api-dev.aalto.fi/api/v1/";
+
 	private String message;
 
 	@Override
@@ -36,8 +40,9 @@ public class DisplaySearchResultsActivity extends Activity {
 		setContentView(R.layout.activity_display_search_results);
 		Intent intent = getIntent();
 		message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-		//list.add("Results");
-		mAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
+		// list.add("Results");
+		mAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,
+				list);
 		final ListView listview = (ListView) findViewById(R.id.listview);
 		listview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -49,7 +54,7 @@ public class DisplaySearchResultsActivity extends Activity {
 		listview.setAdapter(mAdapter);
 		getSearchResults();
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -59,7 +64,31 @@ public class DisplaySearchResultsActivity extends Activity {
 
 	private void openCourseDetails(int position) {
 		Intent intent = new Intent(this, DisplayCourseDetails.class);
-		Course course = courselist.get(position);
+		final Course course = courselist.get(position);
+		final String url = host + "courses/" + course.getCourse_id()
+				+ "/overview?" + key;
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					final String r = MainActivity.CONNECTOR.getResults(url);
+					JSONTokener jsontokener = new JSONTokener(r);
+					JSONObject obj = new JSONObject(jsontokener);
+					Iterator keys = obj.keys();
+					synchronized (course.getDetails()) {
+
+						while (keys.hasNext()) {
+							String key = (String) keys.next();
+							String value = (String) obj.get(key);
+							course.addDetail(key, value);
+						}
+					}
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}).start();
 		intent.putExtra(EXTRA_MESSAGE, course);
 		startActivity(intent);
 	}
@@ -69,7 +98,8 @@ public class DisplaySearchResultsActivity extends Activity {
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-					final String r = MainActivity.CONNECTOR.getResults(message);
+					String url = host + "courses?" + key + "&search=" + message;
+					final String r = MainActivity.CONNECTOR.getResults(url);
 					final ListView listview = (ListView) findViewById(R.id.listview);
 					listview.post(new Runnable() {
 						public void run() {
@@ -79,8 +109,10 @@ public class DisplaySearchResultsActivity extends Activity {
 							try {
 								JSONArray jsonarray = new JSONArray(jsontokener);
 								for (int i = 0; i < jsonarray.length(); i++) {
-									JSONObject obj = (JSONObject) jsonarray.get(i);
-									JSONArray jsonArray = (JSONArray) obj.get("links");
+									JSONObject obj = (JSONObject) jsonarray
+											.get(i);
+									JSONArray jsonArray = (JSONArray) obj
+											.get("links");
 									ArrayList<String> links = new ArrayList<String>();
 									if (jsonArray != null) {
 										int len = jsonArray.length();

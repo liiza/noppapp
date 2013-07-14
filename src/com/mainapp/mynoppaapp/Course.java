@@ -2,6 +2,11 @@ package com.mainapp.mynoppaapp;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Course implements Serializable{
 
@@ -12,6 +17,15 @@ public class Course implements Serializable{
 	private String noppa_language;
 	private String course_url;
 	private String name;
+
+	private Map<String, String> details =  Collections.synchronizedMap(new HashMap<String, String>());
+	
+	public Map<String, String> getDetails() {
+		return details;
+	}
+	public void setDetails(Map<String, String> details) {
+		this.details = details;
+	}
 	public Course(ArrayList l, String d, String c, String cou, String n, String curl, String na){
 		links = l;
 		dept_id =d;
@@ -57,13 +71,15 @@ public class Course implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+	public void addDetail(String key, String value){
+		details.put(key, value);
+	}
+	public String getDetail(String key) {
+		return details.get(key);
+	}
+	public Set getEntrySet(){
+		return details.entrySet();
+	}
 	
-//	"links":[{"uri":"http:\/\/noppa-api-dev.aalto.fi\/api\/v1\/courses\/Kon-41.3006","title":"self","rel":"self"}],
-//	"dept_id":"T2030",
-//	"course_id":"Kon-41.3006",
-//	"course_url_oodi":"https:\/\/oodi.aalto.fi\/a\/opintjakstied.jsp?Kieli=6&Tunniste=Kon-41.3006&html=1",
-//	"noppa_language":"en",
-//	"course_url":"http:\/\/noppa-api-dev.aalto.fi\/noppa\/kurssi\/Kon-41.3006",
-//	"name":"Computer Aided Design Basic Course"},
 
 }
