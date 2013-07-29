@@ -17,15 +17,11 @@ public class Course implements Serializable{
 	private String noppa_language;
 	private String course_url;
 	private String name;
+	private String credits;
+	private String content;
 
-	private Map<String, String> details =  Collections.synchronizedMap(new HashMap<String, String>());
+
 	
-	public Map<String, String> getDetails() {
-		return details;
-	}
-	public void setDetails(Map<String, String> details) {
-		this.details = details;
-	}
 	public Course(ArrayList l, String d, String c, String cou, String n, String curl, String na){
 		links = l;
 		dept_id =d;
@@ -71,14 +67,26 @@ public class Course implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public void addDetail(String key, String value){
-		details.put(key, value);
+//	public void addDetail(String key, String value){
+//		details.put(key, value);
+//	}
+//	public String getDetail(String key) {
+//		return details.get(key);
+//	}
+//	public Set getEntrySet(){
+//		return details.entrySet();
+//	}
+	public String getCredits() {
+		return credits;
 	}
-	public String getDetail(String key) {
-		return details.get(key);
+	public void setCredits(String credits) {
+		this.credits = credits;
 	}
-	public Set getEntrySet(){
-		return details.entrySet();
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
 	}
 	
 

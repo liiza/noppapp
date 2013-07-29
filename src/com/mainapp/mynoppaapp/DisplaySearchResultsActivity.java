@@ -3,6 +3,8 @@ package com.mainapp.mynoppaapp;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import junit.framework.TestListener;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +42,6 @@ public class DisplaySearchResultsActivity extends Activity {
 		setContentView(R.layout.activity_display_search_results);
 		Intent intent = getIntent();
 		message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-		// list.add("Results");
 		mAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,
 				list);
 		final ListView listview = (ListView) findViewById(R.id.listview);
@@ -65,30 +66,6 @@ public class DisplaySearchResultsActivity extends Activity {
 	private void openCourseDetails(int position) {
 		Intent intent = new Intent(this, DisplayCourseDetails.class);
 		final Course course = courselist.get(position);
-		final String url = host + "courses/" + course.getCourse_id()
-				+ "/overview?" + key;
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-					final String r = MainActivity.CONNECTOR.getResults(url);
-					JSONTokener jsontokener = new JSONTokener(r);
-					JSONObject obj = new JSONObject(jsontokener);
-					Iterator keys = obj.keys();
-					synchronized (course.getDetails()) {
-
-						while (keys.hasNext()) {
-							String key = (String) keys.next();
-							String value = (String) obj.get(key);
-							course.addDetail(key, value);
-						}
-					}
-
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}).start();
 		intent.putExtra(EXTRA_MESSAGE, course);
 		startActivity(intent);
 	}
