@@ -16,6 +16,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -69,71 +71,13 @@ public class DisplayCourseDetails extends Activity {
 		// // add the TableRow to the TableLayout
 		table.addView(row3, new TableLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		new DownloadFilesTask().execute("sdaf", "sdf", "öpö");
-
-
-
-
-	}
-
-	private void getDetails() {
 		final String url = host + "courses/" + course.getCourse_id()
 				+ "/overview?" + key;
-		new Thread(new Runnable() {
-			public void run() {
-				try {
-					final String r = MainActivity.CONNECTOR.getResults(url);
-					JSONTokener jsontokener = new JSONTokener(r);
-					final JSONObject obj = new JSONObject(jsontokener);
-					TableLayout table = (TableLayout) findViewById(R.id.TableLayout01);
-					table.post(new Runnable() {
-						public void run() {
-						
-							synchronized (course) {
-								try {
-									course.setCredits((String) obj
-											.get("credits"));
-									TableRow row4 = new TableRow(DisplayCourseDetails.this);
-									// create a new TextView for showing xml data
-									TextView t4 = new TextView(DisplayCourseDetails.this);
-									// set the text to "text xx"
-									t4.setText(course.getCredits());
-									row4.addView(t4);
-									TableLayout table = (TableLayout) findViewById(R.id.TableLayout01);
-									// // add the TableRow to the TableLayout
-									table.addView(row4, new TableLayout.LayoutParams(
-											LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-									
-									course.setContent((String) obj
-											.get("content"));
-									TableRow row5 = new TableRow(DisplayCourseDetails.this);
-									// create a new TextView for showing xml data
-									TextView t5 = new TextView(DisplayCourseDetails.this);
-									// set the text to "text xx"
-									t5.setText(course.getContent());
-									row5.addView(t5);
-									// // add the TableRow to the TableLayout
-									table.addView(row5, new TableLayout.LayoutParams(
-											LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-								} catch (JSONException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-							}
-							
-						}
-					});
-					// Iterator keys = obj.keys();
+		new DownloadFilesTask().execute(url);
 
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-		}).start();
 	}
 
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -141,19 +85,79 @@ public class DisplayCourseDetails extends Activity {
 		return true;
 	}
 
-	 private class DownloadFilesTask extends AsyncTask<String, Integer, Long> {
-	     protected Long doInBackground(String... urls) {
-	    	 getDetails();
-	    	 return null;
-	     }
+	private class DownloadFilesTask extends AsyncTask<String, Integer, Long> {
+		private void setRow(String text){
+			TableLayout table = (TableLayout) findViewById(R.id.TableLayout01);
+			TableRow row4 = new TableRow(
+					DisplayCourseDetails.this);
+			// create a new TextView for showing xml
+			// data
+			TextView t4 = new TextView(
+					DisplayCourseDetails.this);
+			// set the text to "text xx"
+			t4.setText(text);
+			row4.addView(t4);
+			// // add the TableRow to the
+			// TableLayout
+			table.addView(row4,
+					new TableLayout.LayoutParams(
+							LayoutParams.WRAP_CONTENT,
+							LayoutParams.WRAP_CONTENT));
+		}
+		protected Long doInBackground(final String... url) {
+		
+			try {
+				final String r = MainActivity.CONNECTOR.getResults(url[0]);
+				JSONTokener jsontokener = new JSONTokener(r);
+				final JSONObject obj = new JSONObject(jsontokener);
+				TableLayout table = (TableLayout) findViewById(R.id.TableLayout01);
+				table.post(new Runnable() {
+					public void run() {
 
-	     protected void onProgressUpdate(Integer... progress) {
-	         
-	     }
+						synchronized (course) {
+							try {
+								Iterator it = obj.keys();
+								while (it.hasNext())
+								{
+									setRow((String) obj.get((String) it.next()));
+								}
+								
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
 
-	     protected void onPostExecute(Long result) {
-	         
-	     }
-	 }
+					}
+				});
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			
+			return null;
+		}
+
+		protected void onProgressUpdate(Integer... progress) {
+			
+		}
+
+		protected void onPostExecute(Long result) {
+			TableLayout table = (TableLayout) findViewById(R.id.TableLayout01);
+			TableRow row5 = new TableRow(DisplayCourseDetails.this);
+			// create a new TextView for showing xml data
+			TextView t5 = new TextView(DisplayCourseDetails.this);
+			// set the text to "text xx"
+			t5.setText("dummy");
+			row5.addView(t5);
+			// // add the TableRow to the TableLayout
+			table.addView(row5, new TableLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			ProgressBar mProgress = (ProgressBar) findViewById(R.id.progressBar1);
+			mProgress.setVisibility(View.GONE);
+		}
+	}
 
 }

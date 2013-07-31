@@ -17,8 +17,7 @@ public class Course implements Serializable{
 	private String noppa_language;
 	private String course_url;
 	private String name;
-	private String credits;
-	private String content;
+	
 
 
 	
@@ -67,27 +66,7 @@ public class Course implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-//	public void addDetail(String key, String value){
-//		details.put(key, value);
-//	}
-//	public String getDetail(String key) {
-//		return details.get(key);
-//	}
-//	public Set getEntrySet(){
-//		return details.entrySet();
-//	}
-	public String getCredits() {
-		return credits;
-	}
-	public void setCredits(String credits) {
-		this.credits = credits;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
+
 	
 
 }
