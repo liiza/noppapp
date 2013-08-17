@@ -4,19 +4,30 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
+    <TextView
+        android:id="@+id/instruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:padding="10dp"
+        android:hint="@string/instruction" />
 
     <EditText
         android:id="@+id/edit_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/instruction"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:hint="@string/hello_world" />
+        android:hint="@string/type_course_name" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/edit_message"
+        android:layout_centerHorizontal="true"
         android:onClick="sendMessage"
+        android:layout_marginTop="20dp"
         android:text="@string/button_send" />
 
 </RelativeLayout>
