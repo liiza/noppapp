@@ -8,5 +8,12 @@
     <string name="button_send">Search</string>
     <string name="title_activity_display_search_results">DisplaySearchResultsActivity</string>
     <string name="title_activity_display_course_details">DisplayCourseDetails</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_display_course_activities">DisplayCourseActivities</string>
+    <string name="course_details">Details</string>
+    <string name="course_lectures">Lectures and Exercises</string>
+    <string name="course_results">Results</string>
+    <string name="course_assignments">Assignments</string>
+    
 
 </resources>

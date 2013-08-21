@@ -11,3 +11,9 @@ user must be able to view course results
 user can save the lectures of the course to his calenter
 user can save the practicum sessions of the course to his calenter.
 -> user must be able to choose which sessions he saves to calenter
+
+
+user must be able to save courses to his profile
+
+user must be able to filter results by student id
+user must be able to set a student id

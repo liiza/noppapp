@@ -32,6 +32,10 @@
             android:name="com.mainapp.mynoppaapp.DisplayCourseDetails"
             android:label="@string/title_activity_display_course_details" >
         </activity>
+        <activity
+            android:name="com.mainapp.mynoppaapp.DisplayCourseActivities"
+            android:label="@string/title_activity_display_course_activities" >
+        </activity>
     </application>
 
 </manifest>
