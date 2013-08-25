@@ -101,19 +101,53 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:background="@drawable/round_button"
-            android:onClick="expandCollapseTable"
+            android:onClick="expandCollapseAssigments"
             android:text="@string/course_assignments" />
+
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/TableLayout03"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/resultsButton"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp" >
+        </TableLayout>
 
         <Button
             android:id="@+id/assigmentsButton"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/resultsButton"
+            android:layout_below="@id/TableLayout03"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:background="@drawable/round_button"
-            android:onClick="expandCollapseTable"
+            android:onClick="expandCollapseResults"
             android:text="@string/course_results" />
+
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/TableLayout04"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/assigmentsButton"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp" >
+        </TableLayout>
+
+        <Button
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/TableLayout04"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/round_button"
+            android:onClick="writeToFile"
+            android:text="@string/save_to_courses" />
     </RelativeLayout>
 
 </ScrollView>

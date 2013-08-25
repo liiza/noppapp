@@ -19,10 +19,7 @@ public class Connector {
 	
 
 	public Connector() {
-		// examble url
-		// http://noppa-api-dev.aalto.fi/api/v1/organizations?key=cdda4ae4833c0114005de5b5c4371bb8
-		// http://noppa-api-dev.aalto.fi/api/v1/courses?key=cdda4ae4833c0114005de5b5c4371bb8&org_id=eng
-		// http://noppa-api-dev.aalto.fi/api/v1/courses/s-118.3216/overview?key=cdda4ae4833c0114005de5b5c4371bb8
+	
 	}
 
 	public String getResults(String u) {

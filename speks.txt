@@ -7,6 +7,8 @@ user must be able to view course news
 
 user must be able to view course results
 
+if no results, assigments, lectures etc is available the ui should indicate about it
+
 
 user can save the lectures of the course to his calenter
 user can save the practicum sessions of the course to his calenter.
@@ -15,5 +17,4 @@ user can save the practicum sessions of the course to his calenter.
 
 user must be able to save courses to his profile
 
-user must be able to filter results by student id
-user must be able to set a student id
+user must be able to open results link

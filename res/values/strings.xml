@@ -14,6 +14,10 @@
     <string name="course_lectures">Lectures and Exercises</string>
     <string name="course_results">Results</string>
     <string name="course_assignments">Assignments</string>
+    <string name="user_profile">Saved courses</string>
+    <string name="title_activity_user_profile">UserProfile</string>
+    <string name="save_to_courses">Save to my courses</string>
+   
     
 
 </resources>

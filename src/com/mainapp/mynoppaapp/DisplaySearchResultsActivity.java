@@ -1,5 +1,6 @@
 package com.mainapp.mynoppaapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -10,6 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import DataStructures.Course;
+import DataStructures.Session;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ListActivity;
@@ -26,7 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class DisplaySearchResultsActivity extends Activity {
-	private ArrayAdapter mAdapter;
+	private ArrayAdapter<String> mAdapter;
 	final ArrayList<String> list = new ArrayList<String>();
 	final ArrayList<Course> courselist = new ArrayList<Course>();
 	public final static String EXTRA_MESSAGE = "com.mainapp.mynoppaapp.MESSAGE";
@@ -35,6 +38,7 @@ public class DisplaySearchResultsActivity extends Activity {
 	private final String host = "http://noppa-api-dev.aalto.fi/api/v1/";
 
 	private String message;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +46,7 @@ public class DisplaySearchResultsActivity extends Activity {
 		setContentView(R.layout.activity_display_search_results);
 		Intent intent = getIntent();
 		message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-		mAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,
+		mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
 				list);
 		final ListView listview = (ListView) findViewById(R.id.listview);
 		listview.setOnItemClickListener(new OnItemClickListener() {
@@ -88,30 +92,12 @@ public class DisplaySearchResultsActivity extends Activity {
 								for (int i = 0; i < jsonarray.length(); i++) {
 									JSONObject obj = (JSONObject) jsonarray
 											.get(i);
-									JSONArray jsonArray = (JSONArray) obj
-											.get("links");
-									ArrayList<String> links = new ArrayList<String>();
-									if (jsonArray != null) {
-										int len = jsonArray.length();
-										for (int j = 0; j < len; j++) {
-											links.add(jsonArray.get(j)
-													.toString());
-										}
-									}
-									String dept_id = (String) obj
-											.get("dept_id");
 									String course_id = (String) obj
 											.get("course_id");
-									String course_url_oodi = (String) obj
-											.get("course_url_oodi");
-									String noppa_language = (String) obj
-											.get("noppa_language");
-									String course_url = (String) obj
-											.get("course_url");
+								
 									String name = (String) obj.get("name");
-									Course c = new Course(links, dept_id,
-											course_id, course_url_oodi,
-											noppa_language, course_url, name);
+									Course c = new Course(
+											course_id, name);
 									courselist.add(c);
 									mAdapter.add(name);
 								}

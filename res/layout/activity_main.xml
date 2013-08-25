@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
-        android:padding="10dp"
-        android:hint="@string/instruction" />
+        android:hint="@string/instruction"
+        android:padding="10dp" />
 
     <EditText
         android:id="@+id/edit_message"
@@ -22,12 +22,34 @@
         android:hint="@string/type_course_name" />
 
     <Button
+        android:id="@+id/send_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/edit_message"
         android:layout_centerHorizontal="true"
-        android:onClick="sendMessage"
         android:layout_marginTop="20dp"
+        android:onClick="sendMessage"
         android:text="@string/button_send" />
+
+    <Button
+        android:id="@+id/user_profile_button"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/send_message"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/round_button"
+        android:onClick="openUserProfile"
+        android:text="@string/user_profile" />
+
+    <!-- <Button -->
+    <!-- android:layout_width="280dp" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_below="@id/user_profile_button" -->
+    <!-- android:layout_centerHorizontal="true" -->
+    <!-- android:layout_marginTop="20dp" -->
+    <!-- android:background="@drawable/round_button" -->
+    <!-- android:onClick="deleteFile" -->
+    <!-- android:text="@string/user_profile" /> -->
 
 </RelativeLayout>
