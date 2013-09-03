@@ -1,32 +1,25 @@
 package com.mainapp.mynoppaapp;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
 
-import junit.framework.TestListener;
+import java.util.ArrayList;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import DataStructures.Course;
-import DataStructures.Session;
+import datastructures.Course;
+
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class DisplaySearchResultsActivity extends Activity {
 	private ArrayAdapter<String> mAdapter;
@@ -68,7 +61,7 @@ public class DisplaySearchResultsActivity extends Activity {
 	}
 
 	private void openCourseDetails(int position) {
-		Intent intent = new Intent(this, DisplayCourseDetails.class);
+		Intent intent = new Intent(this, DisplayCourseDetailsActivity.class);
 		final Course course = courselist.get(position);
 		intent.putExtra(EXTRA_MESSAGE, course);
 		startActivity(intent);

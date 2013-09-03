@@ -23,11 +23,12 @@
 
     <Button
         android:id="@+id/send_message"
-        android:layout_width="wrap_content"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/edit_message"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:background="@drawable/round_button"
         android:onClick="sendMessage"
         android:text="@string/button_send" />
 
@@ -42,14 +43,6 @@
         android:onClick="openUserProfile"
         android:text="@string/user_profile" />
 
-    <!-- <Button -->
-    <!-- android:layout_width="280dp" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:layout_below="@id/user_profile_button" -->
-    <!-- android:layout_centerHorizontal="true" -->
-    <!-- android:layout_marginTop="20dp" -->
-    <!-- android:background="@drawable/round_button" -->
-    <!-- android:onClick="deleteFile" -->
-    <!-- android:text="@string/user_profile" /> -->
+ 
 
 </RelativeLayout>

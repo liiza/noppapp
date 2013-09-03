@@ -1,4 +1,4 @@
-package DataStructures;
+package datastructures;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class User implements Serializable {
 	public void addCourse(Course course) {
 		//cannot add the same course twice
 		for (int i = 0; i < courses.size(); i++) {
-			if (courses.get(i).getCourse_id() == course.getCourse_id()){
+			if (courses.get(i).getCourse_id().equals(course.getCourse_id())){
 				return;
 			}
 		}
@@ -22,5 +22,6 @@ public class User implements Serializable {
 		
 
 	}
+
 
 }

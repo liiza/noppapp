@@ -140,13 +140,14 @@
         </TableLayout>
 
         <Button
+            android:id="@+id/save_to_my_courses"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/TableLayout04"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:background="@drawable/round_button"
-            android:onClick="writeToFile"
+            android:onClick="addToCourses"
             android:text="@string/save_to_courses" />
     </RelativeLayout>
 

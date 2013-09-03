@@ -1,14 +1,15 @@
-package DataStructures;
+package com.mainapp.mynoppaapp;
 
 import java.io.FileOutputStream;
 import java.io.Serializable;
 
+import android.app.Application;
 import android.content.Context;
 import android.view.View;
 
-import com.mainapp.mynoppaapp.DisplayUserProfile;
+import datastructures.User;
 
-public class Session implements Serializable {
+public class Session extends Application {
 	private User user;
 	public Session(){
 		

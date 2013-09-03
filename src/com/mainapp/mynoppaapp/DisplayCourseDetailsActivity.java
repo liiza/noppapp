@@ -25,14 +25,16 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
-import Animation.DropDownAnimation;
-import DataStructures.Course;
-import DataStructures.Session;
+import datastructures.Course;
+import datastructures.User;
+
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.inputmethodservice.Keyboard.Row;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.R.drawable;
 import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
@@ -45,18 +47,19 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import animation.DropDownAnimation;
 
-public class DisplayCourseDetails extends Activity {
+public class DisplayCourseDetailsActivity extends Activity {
 
 	private Course course;
 
-	
 	private final String key = "key=cdda4ae4833c0114005de5b5c4371bb8";
 	private final String host = "http://noppa-api-dev.aalto.fi/api/v1/";
 
@@ -70,8 +73,8 @@ public class DisplayCourseDetails extends Activity {
 	private final int LECTURES = 2;
 	private final int ASSIGMENTS = 3;
 	private final int RESULTS = 4;
-	
 
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,7 +82,7 @@ public class DisplayCourseDetails extends Activity {
 		Intent intent = getIntent();
 		course = (Course) intent
 				.getSerializableExtra(DisplaySearchResultsActivity.EXTRA_MESSAGE);
-	
+
 		TextView header = (TextView) findViewById(R.id.header);
 		header.setText(course.getCourse_id() + " - " + course.getName());
 		header.setTextSize(20);
@@ -100,6 +103,17 @@ public class DisplayCourseDetails extends Activity {
 		ProgressBar mProgress2 = (ProgressBar) findViewById(R.id.progressBar2);
 		mProgress2.setVisibility(View.GONE);
 
+		Session s = ((Session) getApplicationContext());
+		for (Course c : s.getUser().courses) {
+			if (course.getCourse_id().equals(c.getCourse_id())) {
+				Button btn = (Button) findViewById(R.id.save_to_my_courses);
+				btn.setText("In my courses");
+				btn.setBackground(this.getResources().getDrawable(
+						R.drawable.course_selected_button));
+
+			}
+		}
+
 	}
 
 	@Override
@@ -109,12 +123,37 @@ public class DisplayCourseDetails extends Activity {
 		return true;
 	}
 
+	
+	public void onStop(){
+		super.onStop();
+		Session s = ((Session)getApplicationContext());
+		User u = s.getUser();
+		//clean file first
+		deleteFile(DisplayUserProfileActivity.FILENAME);
+		// write to all courses to file
+		for (Course course:u.courses){
+		
+			FileOutputStream outputStream;
+			String string = course.getName() + ":" + course.getCourse_id() + ";";
+			try {
+				outputStream = openFileOutput(DisplayUserProfileActivity.FILENAME,
+						Context.MODE_APPEND);
+				outputStream.write(string.getBytes());
+				outputStream.close();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	
+
+	}
 	@SuppressLint("NewApi")
 	private void setRow(String text, boolean bolded, int id) {
 		TableLayout table = (TableLayout) findViewById(id);
-		TableRow row = new TableRow(DisplayCourseDetails.this);
+		TableRow row = new TableRow(DisplayCourseDetailsActivity.this);
 		// create a new TextView for showing xml
-		TextView t = new TextView(DisplayCourseDetails.this);
+		TextView t = new TextView(DisplayCourseDetailsActivity.this);
 
 		// check whether given text has some html tags..
 		// Log.e("MYAPP", "exception", e);
@@ -212,19 +251,31 @@ public class DisplayCourseDetails extends Activity {
 		}
 	}
 
-	public void writeToFile(View view) {
-		// write to file
-		FileOutputStream outputStream;
-		String string = course.getName()+ ":" + course.getCourse_id() + ";";
-		try {
-			outputStream = openFileOutput(DisplayUserProfile.FILENAME, Context.MODE_APPEND);
-			outputStream.write(string.getBytes());
-			outputStream.close();
-		
-		} catch (Exception e) {
-			e.printStackTrace();
+	@SuppressLint("NewApi")
+	public void addToCourses(View view) {
+		Session s = ((Session) getApplicationContext());
+		User u = s.getUser();
+		Iterator<Course> i = u.courses.iterator();
+		while(i.hasNext()) {
+			if (course.getCourse_id().equals(i.next().getCourse_id())) {
+				i.remove();
+				Button btn = (Button) findViewById(R.id.save_to_my_courses);
+				btn.setText("Save to my courses");
+				btn.setBackground(this.getResources().getDrawable(
+						R.drawable.round_button));
+				return;
+			}
 		}
+
+		s.getUser().addCourse(course);
+		Button btn = (Button) findViewById(R.id.save_to_my_courses);
+		btn.setText("In my courses");
+		btn.setBackground(this.getResources().getDrawable(
+				R.drawable.course_selected_button));
+
+
 	}
+
 	private class DownloadFilesTask extends AsyncTask<String, Integer, Long> {
 
 		private int datatype;
@@ -235,7 +286,7 @@ public class DisplayCourseDetails extends Activity {
 		}
 
 		protected Long doInBackground(final String... url) {
-			if (this.datatype == DisplayCourseDetails.this.DETAILS) {
+			if (this.datatype == DisplayCourseDetailsActivity.this.DETAILS) {
 				ProgressBar mProgress = (ProgressBar) findViewById(R.id.progressBar1);
 				mProgress.setVisibility(View.VISIBLE);
 
@@ -283,7 +334,7 @@ public class DisplayCourseDetails extends Activity {
 					e.printStackTrace();
 				}
 			}
-			if (this.datatype == DisplayCourseDetails.this.LECTURES) {
+			if (this.datatype == DisplayCourseDetailsActivity.this.LECTURES) {
 				try {
 					final String r = MainActivity.CONNECTOR.getResults(url[0]);
 					JSONTokener jsontokener = new JSONTokener(r);
@@ -360,7 +411,7 @@ public class DisplayCourseDetails extends Activity {
 					e.printStackTrace();
 				}
 			}
-			if (this.datatype == DisplayCourseDetails.this.ASSIGMENTS) {
+			if (this.datatype == DisplayCourseDetailsActivity.this.ASSIGMENTS) {
 				try {
 					final String r = MainActivity.CONNECTOR.getResults(url[0]);
 					JSONTokener jsontokener = new JSONTokener(r);
@@ -411,7 +462,7 @@ public class DisplayCourseDetails extends Activity {
 				}
 
 			}
-			if (this.datatype == DisplayCourseDetails.this.RESULTS) {
+			if (this.datatype == DisplayCourseDetailsActivity.this.RESULTS) {
 				try {
 					final String r = MainActivity.CONNECTOR.getResults(url[0]);
 					JSONTokener jsontokener = new JSONTokener(r);
