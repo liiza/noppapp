@@ -2,6 +2,7 @@ package com.mainapp.mynoppaapp;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.nio.charset.Charset;
 
 import connector.Connector;
 import datastructures.Course;
@@ -50,7 +51,8 @@ public class MainActivity extends Activity {
 					u.addCourse(new Course(parts[1], parts[0]));
 				}
 				else {
-					c = c + (char)b;
+					byte[] bytes = {b};
+					c = c + new String(bytes, "ISO-8859-1");
 				}
 
 			}
@@ -78,8 +80,9 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(this, DisplayUserProfileActivity.class);
 		startActivity(intent);
 	}
+	
+	//for debugging purposes only
 	public void deleteFile(View view) {
-		// write to file
 		deleteFile(DisplayUserProfileActivity.FILENAME);
 		
 	}

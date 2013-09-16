@@ -132,13 +132,12 @@ public class DisplayCourseDetailsActivity extends Activity {
 		deleteFile(DisplayUserProfileActivity.FILENAME);
 		// write to all courses to file
 		for (Course course:u.courses){
-		
 			FileOutputStream outputStream;
 			String string = course.getName() + ":" + course.getCourse_id() + ";";
 			try {
 				outputStream = openFileOutput(DisplayUserProfileActivity.FILENAME,
 						Context.MODE_APPEND);
-				outputStream.write(string.getBytes());
+				outputStream.write(string.getBytes("ISO-8859-1"));
 				outputStream.close();
 
 			} catch (Exception e) {

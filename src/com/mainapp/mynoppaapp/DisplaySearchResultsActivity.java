@@ -51,6 +51,7 @@ public class DisplaySearchResultsActivity extends Activity {
 		});
 		listview.setAdapter(mAdapter);
 		getSearchResults();
+		
 	}
 
 	@Override
